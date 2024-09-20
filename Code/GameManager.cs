@@ -5,11 +5,11 @@ public class GameManager : MonoBehaviour
     public Ball ball;
 
     public Paddle playerPaddle;
-    public Paddle computerPaddle;
+    public Paddle player2Paddle;
     public Text playerScoreText;
-    public Text computerScoreText;
+    public Text player2ScoreText;
     private int _playerScore;
-    private int _computerScore;
+    private int _player2Score;
 
     public void PlayerScores()
     {
@@ -18,18 +18,18 @@ public class GameManager : MonoBehaviour
         this.playerScoreText.text = _playerScore.ToString();
         ResetRound();
     }
-    public void ComputerScores()
+    public void Player2Scores()
     {
-        _computerScore++;
+        _player2Score++;
 
-        this.computerScoreText.text = _computerScore.ToString();
+        this.player2ScoreText.text = _player2Score.ToString();
         ResetRound();
     }
 
     private void ResetRound()
     {
         this.playerPaddle.ResetPosition();
-        this.computerPaddle.ResetPosition();
+        this.player2Paddle.ResetPosition();
         this.ball.ResetPosition();
         this.ball.AddStartingForce();
     }

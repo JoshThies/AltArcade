@@ -3,24 +3,19 @@ using UnityEngine;
 public class PlayerPaddle : Paddle
 {
     private Vector2 _direction;
+    private AudioSource _audioSource;
 
-    // Rainbow colors
-    private Color[] rainbowColors = new Color[]
-    {
-        Color.red,     // Red
-        new Color(1f, 0.5f, 0f), // Orange
-        Color.yellow,  // Yellow
-        Color.green,   // Green
-        Color.blue,    // Blue
-        new Color(0.5f, 0f, 1f)  // Violet
-    };
+    public float minPitch = 0.5f;
+    public float maxPitch = 2.0f;
 
-    private SpriteRenderer _spriteRenderer;
+    public float minY = -4.0f;
+    public float maxY = 4.0f;
 
     private void Awake()
     {
         base.Awake(); // Call the base class's Awake method
-        _spriteRenderer = GetComponent<SpriteRenderer>(); // Get the SpriteRenderer component
+        _rigidbody = GetComponent<Rigidbody2D>();
+        _audioSource = GetComponent<AudioSource>();
     }
 
     private void Update()
@@ -39,31 +34,8 @@ public class PlayerPaddle : Paddle
             _direction = Vector2.zero;
         }
 
-        // Change color based on specific key presses
-        if (Input.GetKeyDown(KeyCode.Alpha1)) // 1 key for Red
-        {
-            SetColor(rainbowColors[0]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha2)) // 2 key for Orange
-        {
-            SetColor(rainbowColors[1]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha3)) // 3 key for Yellow
-        {
-            SetColor(rainbowColors[2]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha4)) // 4 key for Green
-        {
-            SetColor(rainbowColors[3]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha5)) // 5 key for Blue
-        {
-            SetColor(rainbowColors[4]);
-        }
-        else if (Input.GetKeyDown(KeyCode.Alpha6)) // 6 key for Violet
-        {
-            SetColor(rainbowColors[5]);
-        }
+        AdjustPitchBasedOnPosition();
+
     }
 
     private void FixedUpdate()
@@ -75,11 +47,21 @@ public class PlayerPaddle : Paddle
     }
 
     // Method to set the paddle's color
-    private void SetColor(Color color)
+    private void AdjustPitchBasedOnPosition()
     {
-        if (_spriteRenderer != null)
+        // Get the current Y position of the paddle
+        float currentY = transform.position.y;
+
+        // Normalize the Y position to a value between 0 and 1
+        float normalizedY = Mathf.InverseLerp(minY, maxY, currentY);
+
+        // Calculate the pitch based on the normalized Y position
+        float pitch = Mathf.Lerp(minPitch, maxPitch, normalizedY);
+
+        // Apply the pitch to the AudioSource
+        if (_audioSource != null)
         {
-            _spriteRenderer.color = color;
+            _audioSource.pitch = pitch;
         }
     }
 }

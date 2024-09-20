@@ -7,7 +7,7 @@ const int echoPin1 = 1;
 const int trigPin2 = 3;
 const int echoPin2 = 4;
 
-float duration1, distance1, duration2, distance2, durationRepeat, distanceRepeat;
+float duration1, distance1, duration2, distance2, duration1Repeat, distance1Repeat, distance2Repeat, duration2Repeat;
 
 void setup() {                              
   pinMode(trigPin1, OUTPUT);
@@ -40,88 +40,116 @@ void loop() {
   //Serial.println(distance2);
 
   // Control up and down arrow keys based on the first sensor
-  if (distance1 > 0 && distance1 < 100) {
+  if (distance1 > 5 && distance1 < 100) {
     delay(5);
     digitalWrite(trigPin1, LOW);
     delayMicroseconds(2);
     digitalWrite(trigPin1, HIGH);
     delayMicroseconds(10);
     digitalWrite(trigPin1, LOW);
-    durationRepeat = pulseIn(echoPin1, HIGH);
-    distanceRepeat = (durationRepeat*.0343)/2;
+    duration1Repeat = pulseIn(echoPin1, HIGH);
+    distance1Repeat = (duration1Repeat*.0343)/2;
     Serial.print("DistanceRepeat: ");
-    Serial.println(distanceRepeat);
-    if (distanceRepeat > distance1) {
-      if (distanceRepeat > (distance1 + 1)) {
+    Serial.println(distance1Repeat);
+    if (distance1Repeat > distance1) {
+      if (distance1Repeat > (distance1 + 1)) {
         Keyboard.press(KEY_UP_ARROW);
-        colorChanger();
+        delay(10);
         Keyboard.release(KEY_UP_ARROW);
       }
       else {
         Keyboard.press(KEY_UP_ARROW);
         delay(5);
         Keyboard.release(KEY_UP_ARROW);
-        colorChanger();
+        delay(10);
       }
     }
-    else if (distance1 > distanceRepeat) {
-      if(distance1 > (distanceRepeat + 1)) {
+    else if (distance1 > distance1Repeat) {
+      if(distance1 > (distance1Repeat + 1)) {
         Keyboard.press(KEY_DOWN_ARROW);
-        colorChanger();
+        delay(10);
         Keyboard.release(KEY_DOWN_ARROW);
       }
       else {
         Keyboard.press(KEY_DOWN_ARROW);
         delay(5);
         Keyboard.release(KEY_DOWN_ARROW);
-        colorChanger();
+        delay(10);
       }
     }
     else {
-      colorChanger();
+      delay(10);
     }
+  }
+
+  else if (distance1 <= 5) {
+    Keyboard.press(KEY_DOWN_ARROW);
+    delay(10);
+    Keyboard.release(KEY_DOWN_ARROW);
   }
 
   else{
-    colorChanger();
+    Keyboard.press(KEY_UP_ARROW);
+    delay(10);
+    Keyboard.release(KEY_UP_ARROW);
   }
+
+  if (distance2 > 5 && distance2 < 100) {
+    delay(5);
+    digitalWrite(trigPin1, LOW);
+    delayMicroseconds(2);
+    digitalWrite(trigPin2, HIGH);
+    delayMicroseconds(10);
+    digitalWrite(trigPin2, LOW);
+    duration2Repeat = pulseIn(echoPin2, HIGH);
+    distance2Repeat = (duration2Repeat*.0343)/2;
+    Serial.print("DistanceRepeat: ");
+    Serial.println(distance2Repeat);
+    if (distance2Repeat > distance2) {
+      if (distance2Repeat > (distance2 + 1)) {
+        Keyboard.press(KEY_LEFT_ARROW);
+        delay(10);
+        Keyboard.release(KEY_LEFT_ARROW);
+      }
+      else {
+        Keyboard.press(KEY_LEFT_ARROW);
+        delay(5);
+        Keyboard.release(KEY_LEFT_ARROW);
+        delay(10);
+      }
+    }
+    else if (distance2 > distance2Repeat) {
+      if(distance2 > (distance2Repeat + 1)) {
+        Keyboard.press(KEY_RIGHT_ARROW);
+        delay(10);
+        Keyboard.release(KEY_RIGHT_ARROW);
+      }
+      else {
+        Keyboard.press(KEY_RIGHT_ARROW);
+        delay(5);
+        Keyboard.release(KEY_RIGHT_ARROW);
+        delay(10);
+      }
+    }
+    else {
+      delay(10);
+    }
+  }
+
+  else if (distance2 <= 5) {
+    Keyboard.press(KEY_RIGHT_ARROW);
+    delay(10);
+    Keyboard.release(KEY_RIGHT_ARROW);
+  }
+
+  else{
+    Keyboard.press(KEY_LEFT_ARROW);
+    delay(10);
+    Keyboard.release(KEY_LEFT_ARROW);
+  }
+
+  
   // Add a short delay before the next loop iteration
   delay(1);
-}
-
-void colorChanger() {
-  if (distance2 > 0 && distance2 < 10) {
-      Keyboard.press('1');
-      delay(10);
-      Keyboard.release('1');
-    }
-    else if (distance2 > 10 && distance2 < 15) {
-      Keyboard.press('2');
-      delay(10);
-      Keyboard.release('2');
-    }
-    else if (distance2 > 15 && distance2 < 20) {
-      Keyboard.press('3');
-      delay(10);
-      Keyboard.release('3');
-    }
-    else if (distance2 > 20 && distance2 < 25) {
-      Keyboard.press('4');
-      delay(10);
-      Keyboard.release('4');
-    }
-    else if (distance2 > 25 && distance2 < 30) {
-      Keyboard.press('5');
-      delay(10);
-      Keyboard.release('5');
-    }
-    else if (distance2 > 30 && distance2 < 100) {
-      Keyboard.press('6');
-      delay(10);
-      Keyboard.release('6');
-    }
-    else{
-      delay(10);
-    }
 }
 
